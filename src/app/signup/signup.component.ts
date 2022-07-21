@@ -17,6 +17,12 @@ export class SignupComponent implements OnInit {
   ngOnInit(): void {}
 
   submit() {
-    this.authService.signUp(this.name, this.password);
+    this.authService
+      .postSignUp(this.name, this.password)
+      .subscribe((response) => {
+        if (this.authService.signUp(response.accessToken)) {
+          location.href = '/';
+        }
+      });
   }
 }

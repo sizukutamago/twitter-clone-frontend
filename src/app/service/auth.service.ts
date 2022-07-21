@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import * as moment from 'moment';
+import { Observable } from 'rxjs';
 
 const jwt = new JwtHelperService();
 
@@ -25,16 +26,22 @@ export class AuthService {
     }
   }
 
-  signUp(name: string, password: string) {
-    console.log({ name });
-    this.http
-      .post<{ accessToken: string }>('http://localhost:3000/auth/signup', {
+  postSignUp(
+    name: string,
+    password: string,
+  ): Observable<{ accessToken: string }> {
+    return this.http.post<{ accessToken: string }>(
+      'http://localhost:3000/auth/signup',
+      {
         name,
         password,
-      })
-      .subscribe((token) => {
-        this.saveToken(token.accessToken);
-      });
+      },
+    );
+  }
+
+  signUp(accessToken: string) {
+    this.saveToken(accessToken);
+    return this.isAuthenticated();
   }
 
   logout(): void {
@@ -43,16 +50,13 @@ export class AuthService {
 
     this.decodedToken = new DecodedToken();
   }
-  private saveToken(token: string): string {
+  private saveToken(token: string): void {
     this.decodedToken = jwt.decodeToken(token);
     localStorage.setItem('auth_token', token);
     localStorage.setItem('auth_meta', JSON.stringify(this.decodedToken));
-
-    return token;
   }
 
   public isAuthenticated(): boolean {
-    console.log(this.decodedToken);
     return moment().isBefore(moment.unix(this.decodedToken.exp || 0));
   }
 }
