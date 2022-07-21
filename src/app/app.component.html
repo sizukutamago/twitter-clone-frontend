@@ -5,13 +5,26 @@
     </div>
     <div class="w-full block flex-grow flex items-center w-auto">
       <div class="text-sm flex-grow"></div>
-      <div>
-        <a
-          href="#"
-          class="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white"
-        >Sign in</a
-        >
-      </div>
+      <ng-container *ngIf="!auth.isAuthenticated()">
+        <div>
+          <a
+            routerLink="/signup"
+            class="inline-block text-sm px-4 py-2 leading-none border rounded text-cyan-900 border-white hover:border-transparent hover:text-teal-500 bg-white mr-4"
+          >Sign up</a
+          >
+        </div>
+      </ng-container>
+      <ng-container *ngIf="auth.isAuthenticated()">
+        <div>
+          <button
+            (click)="auth.logout()"
+            class="inline-block text-sm px-4 py-2 leading-none border rounded text-cyan-900 border-white hover:border-transparent hover:text-teal-500 bg-white mr-4"
+          >logout</button
+          >
+        </div>
+      </ng-container>
+
     </div>
   </nav>
+  <router-outlet></router-outlet>
 </div>
