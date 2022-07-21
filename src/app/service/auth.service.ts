@@ -56,7 +56,11 @@ export class AuthService {
     localStorage.setItem('auth_meta', JSON.stringify(this.decodedToken));
   }
 
-  public isAuthenticated(): boolean {
+  getAccessToken(): string {
+    return localStorage.getItem('auth_token') || '';
+  }
+
+  isAuthenticated(): boolean {
     return moment().isBefore(moment.unix(this.decodedToken.exp || 0));
   }
 }

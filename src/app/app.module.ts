@@ -8,9 +8,10 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthService } from './service/auth.service';
 import { AuthGuard } from './auth/auth.guard';
+import { TweetComponent } from './tweet/tweet.component';
 
 @NgModule({
-  declarations: [AppComponent, SignupComponent],
+  declarations: [AppComponent, SignupComponent, TweetComponent],
   imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
   providers: [AuthService, AuthGuard],
   bootstrap: [AppComponent],
